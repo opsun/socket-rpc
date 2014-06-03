@@ -104,7 +104,7 @@ public class RpcClientImpl implements RpcClient{
 		switch(response.getState()){
 			case CallResponse.EXCEPTION:
 				throw new RpcException("调用异常");
-			case CallResponse.METHOD_NO_FOUND:
+			case CallResponse.METHOD_NOT_FOUND:
 				throw new RpcException("方法未找到");
 			case CallResponse.SUCCESS:
 				return response.getResult();
@@ -118,10 +118,7 @@ public class RpcClientImpl implements RpcClient{
 	 * @param info
 	 */
 	private void send(CallInfo info) throws IOException{
-		SelectionKey key = channel.register(selector, SelectionKey.OP_WRITE, info);
-		key.interestOps(key.interestOps()|SelectionKey.OP_WRITE);
-		selector.wakeup();
-		//channel.write(ByteBuffer.wrap(Utils.pack(info)));
+		channel.write(ByteBuffer.wrap(Utils.pack(info)));
 	}
 
 	private class Master extends Thread{
@@ -136,11 +133,6 @@ public class RpcClientImpl implements RpcClient{
 		                ite.remove();
 		                if(key.isReadable()){
 		                	process(key);
-		                }else if(key.isWritable()){
-		                	if(key.attachment() instanceof CallInfo){
-		                		channel.write(ByteBuffer.wrap(Utils.pack(key.attachment())));	
-		                	}
-		                	key.interestOps(SelectionKey.OP_READ);  
 		                }
 		            }
 				}catch (Exception e) {

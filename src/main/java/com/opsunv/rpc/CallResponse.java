@@ -23,7 +23,7 @@ public class CallResponse implements Serializable{
 	/**
 	 * 方法不存在
 	 */
-	public final static int METHOD_NO_FOUND = 3;
+	public final static int METHOD_NOT_FOUND = 3;
 	
 	private String callId;
 	

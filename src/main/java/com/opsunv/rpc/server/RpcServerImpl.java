@@ -45,7 +45,7 @@ public class RpcServerImpl implements RpcServer{
 		
 		//如果方法名为空直接返回
 		if(info.getName()==null){
-			response.setState(CallResponse.METHOD_NO_FOUND);
+			response.setState(CallResponse.METHOD_NOT_FOUND);
 			return response;
 		}
 		
@@ -53,7 +53,7 @@ public class RpcServerImpl implements RpcServer{
 		
 		//不存在访问的rpc方法,直接返回
 		if(callDefine==null){
-			response.setState(CallResponse.METHOD_NO_FOUND);
+			response.setState(CallResponse.METHOD_NOT_FOUND);
 		}else{
 			
 			//调用方法
